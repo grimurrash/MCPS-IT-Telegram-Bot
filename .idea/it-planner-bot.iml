@@ -117,6 +117,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/microsoft/microsoft-graph" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/oauth2-client" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/event" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/irazasyed/telegram-bot-sdk" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

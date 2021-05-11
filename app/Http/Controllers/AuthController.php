@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model;
-use App\TokenStore\TokenCache;
+use App\Classes\TokenCache;
 
 class AuthController extends Controller
 {
-    public function signin()
+    public function signin(): RedirectResponse
     {
         // Initialize the OAuth client
         $oauthClient = new GenericProvider([
@@ -78,16 +81,22 @@ class AuthController extends Controller
                 $user = $graph->createRequest('GET', '/me?$select=displayName,mail,mailboxSettings,userPrincipalName')
                     ->setReturnType(Model\User::class)
                     ->execute();
+
                 $tokenCache = new TokenCache();
                 $tokenCache->storeTokens($accessToken, $user);
 
                 return redirect('/');
             }
-            catch (IdentityProviderException $e) {
+            catch (IdentityProviderException | GuzzleException $e) {
+                return redirect('/')
+                    ->with('error', 'Error requesting access token')
+                    ->with('errorDetail', $e->getMessage());
+            } catch (Exception $e) {
                 return redirect('/')
                     ->with('error', 'Error requesting access token')
                     ->with('errorDetail', $e->getMessage());
             }
+
         }
 
         return redirect('/')

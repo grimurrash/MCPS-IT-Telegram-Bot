@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PlannerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,3 +19,9 @@ Route::get('/', [HomeController::class, 'welcome']);
 Route::get('/signin', [AuthController::class, 'signin']);
 Route::get('/callback', [AuthController::class, 'callback']);
 Route::get('/signout', [AuthController::class, 'signout']);
+
+Route::get('/calendar', 'CalendarController@calendar');
+Route::get('/calendar/new', 'CalendarController@getNewEventForm');
+Route::post('/calendar/new', 'CalendarController@createNewEvent');
+
+Route::get('/planner', [PlannerController::class, 'planner']);
